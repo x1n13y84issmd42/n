@@ -1,19 +1,18 @@
 class ArraySorted extends Array {
-    limit;
-    compare;
+    details = {};
     constructor(limit, compare) {
         super();
-        this.limit = limit;
-        this.compare = compare;
-        if (!this.compare) {
-            this.compare = ((a, b) => a < b);
-        }
+        Object.defineProperty(this, 'details', {
+            enumerable: false,
+        });
+        this.details.compare = compare || ((a, b) => a < b);
+        this.details.limit = limit;
     }
     push(v) {
         const i = this.findInsertIndex(v);
         this.splice(i, 0, v);
-        if (this.limit && this.length > this.limit) {
-            this.splice(this.limit);
+        if (this.details.limit && this.length > this.details.limit) {
+            this.splice(this.details.limit);
         }
         return this.length;
     }
@@ -26,7 +25,7 @@ export class ArraySortedDesc extends ArraySorted {
             const i = Math.floor((il + ir) / 2);
             if (!this[i])
                 return i;
-            if (this.compare(this[i], v)) {
+            if (this.details.compare(this[i], v)) {
                 ir = i;
             }
             else {

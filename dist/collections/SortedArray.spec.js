@@ -39,5 +39,10 @@ describe('ArraySortedDesc', function () {
         a.push({ v: 111 });
         expect([...a]).toEqual([{ v: 111 }, { v: 33 }, { v: 5 }]);
     });
+    it("doesn't have extra props", async function () {
+        const a = new ArraySortedDesc(3, (a, b) => a.v < b.v);
+        expect([...a.entries()]).toEqual([]);
+        expect([...a.keys()]).toEqual([]);
+    });
 });
 //# sourceMappingURL=SortedArray.spec.js.map
