@@ -3,17 +3,26 @@ type Comparator<T> = T extends number ? never :
 		(a: T, b: T) => boolean;
 
 abstract class ArraySorted<T> extends Array<T> {
+	protected details: {
+		limit?: number;
+		compare?: Comparator<T>;
+	} = {};
 	/**
 	 * Creates an array that is always sorted and capped.
 	 * @param limit Optional limit to the array size.
 	 */
-    constructor(private limit?: number, protected compare?: Comparator<T>) {
+    constructor(limit?: number, compare?: Comparator<T>) {
 		//TODO: consider making it work with preallocated arrays.
 		super();
 
-		if (! this.compare) {
-			this.compare = ((a: T, b: T) => a < b) as Comparator<T>;
-		}
+		Object.defineProperty(this, 'details', {
+			// writable: false,
+			enumerable: false,
+			// configurable: false,
+		});
+
+		this.details.compare = compare || ((a: T, b: T) => a < b) as Comparator<T>;
+		this.details.limit = limit;
 	}
 
 	/**
@@ -25,8 +34,8 @@ abstract class ArraySorted<T> extends Array<T> {
 		const i = this.findInsertIndex(v);
 		this.splice(i, 0, v);
 
-		if (this.limit && this.length > this.limit) {
-			this.splice(this.limit);
+		if (this.details.limit && this.length > this.details.limit) {
+			this.splice(this.details.limit);
 		}
 
 		return this.length;
@@ -48,7 +57,7 @@ export class ArraySortedDesc<T> extends ArraySorted<T> {
 			const i = Math.floor((il + ir) / 2);
 
 			if (! this[i]) return i;
-			if (this.compare(this[i], v)) {
+			if (this.details.compare(this[i], v)) {
 				ir = i;
 			} else {
 				il = i + 1;

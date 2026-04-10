@@ -1,6 +1,9 @@
 import { ArraySortedDesc } from "./SortedArray";
 
+
 describe('ArraySortedDesc', function () {
+	type Node = {v: number;};
+
 	it("is sorted", async function () {
 		const a = new ArraySortedDesc();
 		a.push(1);
@@ -32,7 +35,6 @@ describe('ArraySortedDesc', function () {
 	});
 
 	it("objects", async function () {
-		type Node = {v: number;};
 		const a = new ArraySortedDesc<Node>(3, (a, b) => a.v < b.v);
 		a.push({v: 1});
 		a.push({v: 2});
@@ -45,5 +47,11 @@ describe('ArraySortedDesc', function () {
 		a.push({v: 111});
 		
 		expect([...a]).toEqual([{v: 111}, {v: 33}, {v: 5}]);
+	});
+
+	it("doesn't have extra props", async function () {
+		const a = new ArraySortedDesc<Node>(3, (a, b) => a.v < b.v);
+		expect([...a.entries()]).toEqual([]);
+		expect([...a.keys()]).toEqual([]);
 	});
 });
