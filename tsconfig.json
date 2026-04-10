@@ -1,0 +1,32 @@
+{
+	"include": [
+		"./src/**/*"
+	],
+	"exclude": [
+		"./node_modules",
+		"./dist"
+	],
+	"compilerOptions": {
+		"outDir": "./dist",
+
+		"module": "ESNext",
+		"moduleResolution": "node",
+
+		"allowJs": false,
+		"declaration": true,
+		"experimentalDecorators": true,
+		"noImplicitAny": true,
+		"preserveConstEnums": true,
+		"removeComments": true,
+		"sourceMap": true,
+		"forceConsistentCasingInFileNames": false,
+		"esModuleInterop": true,
+        
+		"target": "ESNext",
+
+		"lib": [
+			"dom",
+			"ESNext"
+		]
+	}
+}
