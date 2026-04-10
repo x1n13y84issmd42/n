@@ -17,7 +17,7 @@ describe('ArraySortedDesc', function () {
 	});
 	
 	it("is capped", async function () {
-		const a = new ArraySortedDesc(3);
+		const a = new ArraySortedDesc<number>(3);
 		a.push(1);
 		a.push(2);
 		a.push(0);
@@ -29,5 +29,21 @@ describe('ArraySortedDesc', function () {
 		a.push(111);
 		
 		expect([...a]).toEqual([111, 33, 5]);
+	});
+
+	it("objects", async function () {
+		type Node = {v: number;};
+		const a = new ArraySortedDesc<Node>(3, (a, b) => a.v < b.v);
+		a.push({v: 1});
+		a.push({v: 2});
+		a.push({v: 0});
+		a.push({v: 5});
+		a.push({v: 3});
+		a.push({v: 0});
+		a.push({v: 2});
+		a.push({v: 33});
+		a.push({v: 111});
+		
+		expect([...a]).toEqual([{v: 111}, {v: 33}, {v: 5}]);
 	});
 });

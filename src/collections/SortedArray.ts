@@ -1,11 +1,19 @@
+type Comparator<T> = T extends number ? never : 
+	T extends string ? never :
+		(a: T, b: T) => boolean;
+
 abstract class ArraySorted<T> extends Array<T> {
 	/**
 	 * Creates an array that is always sorted and capped.
 	 * @param limit Optional limit to the array size.
 	 */
-    constructor(private limit?: number) {
+    constructor(private limit?: number, protected compare?: Comparator<T>) {
 		//TODO: consider making it work with preallocated arrays.
 		super();
+
+		if (! this.compare) {
+			this.compare = ((a: T, b: T) => a < b) as Comparator<T>;
+		}
 	}
 
 	/**
@@ -40,7 +48,7 @@ export class ArraySortedDesc<T> extends ArraySorted<T> {
 			const i = Math.floor((il + ir) / 2);
 
 			if (! this[i]) return i;
-			if (this[i] < v) {
+			if (this.compare(this[i], v)) {
 				ir = i;
 			} else {
 				il = i + 1;
