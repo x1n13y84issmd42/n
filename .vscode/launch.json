@@ -4,34 +4,29 @@
 	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
-
 		{
-			"name": "tsx",
+			"name": "Debug Jest tests",
 			"type": "node",
 			"request": "launch",
-
-			// Debug current file in VSCode
-			"program": "${file}",
-
-			/*
-			* Path to tsx binary
-			* Assuming locally installed
-			*/
-			"runtimeExecutable": "tsx",
-
-			/*
-			* Open terminal when debugging starts (Optional)
-			* Useful to see console.logs
-			*/
+			"runtimeExecutable": "jest",
 			"console": "integratedTerminal",
 			"internalConsoleOptions": "neverOpen",
-
-			// Files to exclude from debugger (e.g. call stack)
 			"skipFiles": [
-				// Node.js internal core modules
 				"<node_internals>/**",
+				"${workspaceFolder}/node_modules/**",
+			],
+		},
 
-				// Ignore all dependencies (optional)
+		{
+			"name": "Debug single TS file with tsx",
+			"type": "node",
+			"request": "launch",
+			"program": "${file}",
+			"runtimeExecutable": "tsx",
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen",
+			"skipFiles": [
+				"<node_internals>/**",
 				"${workspaceFolder}/node_modules/**",
 			],
 		}
